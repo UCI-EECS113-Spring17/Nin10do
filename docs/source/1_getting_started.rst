@@ -47,7 +47,7 @@ To make your own PYNQ Micro-SD card:
       * Windows: Use `win32DiskImager <https://sourceforge.net/projects/win32diskimager/>`_
       * Linux/MacOS: Use the built in *dd* command\*
    
-\* For detailed instructions for writing the SD card using different operating systems, see the `Appendix: Writing the SD card image <17_appendix.rst#writing-the-sd-card-image>`_. 
+\* For detailed instructions for writing the SD card using different operating systems, see the `Appendix: Writing the SD card image <17_appendix.html#writing-the-sd-card-image>`_. 
    
 Setup the PYNQ-Z1 
 ===================
