@@ -103,7 +103,7 @@ class xlnk:
         None
 
         """
-        for key in self.bufmap.keys():
+        #for key in self.bufmap.keys():
             #libxlnk.cma_free(key)
     
     def __check_buftype(self, buf):
