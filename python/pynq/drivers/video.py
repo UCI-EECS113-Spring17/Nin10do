@@ -390,12 +390,12 @@ class HDMI(object):
             """
             
         else:
-            if frame_list == None:
+            #if frame_list == None:
                 #self._capture = _video._capture(VDMA_DICT,
                 #                               GPIO_DICT,
                 #                                VTC_CAPTURE_ADDR,
                 #                                init_timeout)
-            else:
+            #else:
                 #self._capture = _video._capture(VDMA_DICT,
                 #                                GPIO_DICT,
                 #                                VTC_CAPTURE_ADDR,
