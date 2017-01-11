@@ -70,12 +70,12 @@ VDMA_DICT = {
     'ADDR_WIDTH': 32,
 }
 
-VTC_DISPLAY_ADDR = int(PL.ip_dict["SEG_v_tc_0_Reg"][0],16)
-VTC_CAPTURE_ADDR = int(PL.ip_dict["SEG_v_tc_1_Reg"][0],16)
-DYN_CLK_ADDR = int(PL.ip_dict["SEG_axi_dynclk_0_reg0"][0],16)
+#VTC_DISPLAY_ADDR = int(PL.ip_dict["SEG_v_tc_0_Reg"][0],16)
+#VTC_CAPTURE_ADDR = int(PL.ip_dict["SEG_v_tc_1_Reg"][0],16)
+#DYN_CLK_ADDR = int(PL.ip_dict["SEG_axi_dynclk_0_reg0"][0],16)
 
 GPIO_DICT = {
-    'BASEADDR': int(PL.ip_dict["SEG_axi_gpio_video_Reg"][0],16),
+    #'BASEADDR': int(PL.ip_dict["SEG_axi_gpio_video_Reg"][0],16),
     'INTERRUPT_PRESENT': 1,
     'IS_DUAL': 1,
 }
