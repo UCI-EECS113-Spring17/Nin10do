@@ -35,7 +35,7 @@ from pynq import PL
 from time import sleep
 import numpy as np
 from PIL import Image
-from . import _video
+#from . import _video
 
 VDMA_DICT = {
     'BASEADDR': int(PL.ip_dict["SEG_axi_vdma_0_Reg"][0],16),
@@ -148,24 +148,24 @@ class HDMI(object):
 
         if not direction.lower() in ['in', 'out']:
             raise ValueError("HDMI direction should be in or out.")
-        if (not isinstance(frame_list, _video._frame)) and \
-                (not (frame_list == None)):
-            raise ValueError("frame_list should be of type _video._frame.")
+        #if (not isinstance(frame_list, _video._frame)) and \
+        #        (not (frame_list == None)):
+        #    raise ValueError("frame_list should be of type _video._frame.")
         if (not isinstance(init_timeout, int)) or init_timeout < 1:
             raise ValueError("init_timeout should be integer >= 1.")
         
         self.direction = direction.lower()
         if self.direction == 'out':
             if frame_list == None:
-                self._display = _video._display(VDMA_DICT,
-                                                VTC_DISPLAY_ADDR,
-                                                DYN_CLK_ADDR, 1)
+                #self._display = _video._display(VDMA_DICT,
+                #                                VTC_DISPLAY_ADDR,
+                #                                DYN_CLK_ADDR, 1)
                 self._display.mode(video_mode)
             else:
-                self._display = _video._display(VDMA_DICT,
-                                                VTC_DISPLAY_ADDR,
-                                                DYN_CLK_ADDR, 1,
-                                                frame_list)
+                #self._display = _video._display(VDMA_DICT,
+                #                                VTC_DISPLAY_ADDR,
+                #                                DYN_CLK_ADDR, 1,
+                #                                frame_list)
                 self._display.mode(video_mode)
                                                 
             self.frame_list = self._display.framebuffer
@@ -391,16 +391,16 @@ class HDMI(object):
             
         else:
             if frame_list == None:
-                self._capture = _video._capture(VDMA_DICT,
-                                                GPIO_DICT,
-                                                VTC_CAPTURE_ADDR,
-                                                init_timeout)
+                #self._capture = _video._capture(VDMA_DICT,
+                #                               GPIO_DICT,
+                #                                VTC_CAPTURE_ADDR,
+                #                                init_timeout)
             else:
-                self._capture = _video._capture(VDMA_DICT,
-                                                GPIO_DICT,
-                                                VTC_CAPTURE_ADDR,
-                                                init_timeout,
-                                                frame_list)
+                #self._capture = _video._capture(VDMA_DICT,
+                #                                GPIO_DICT,
+                #                                VTC_CAPTURE_ADDR,
+                #                                init_timeout,
+                #                                frame_list)
                                                 
             self.frame_list = self._capture.framebuffer
                   
@@ -697,7 +697,7 @@ class Frame(object):
             self.frame = frame
         else:
             # Create a framebuffer with 1 frame
-            self._framebuffer = _video._frame(1)
+            #self._framebuffer = _video._frame(1)
             # Create an empty frame
             self.frame = self._framebuffer(0)
         self.width = width
