@@ -38,7 +38,7 @@ from PIL import Image
 #from . import _video
 
 VDMA_DICT = {
-    'BASEADDR': int(PL.ip_dict["SEG_axi_vdma_0_Reg"][0],16),
+    #'BASEADDR': int(PL.ip_dict["SEG_axi_vdma_0_Reg"][0],16),
     'NUM_FSTORES': 3,
     'INCLUDE_MM2S': 1,
     'INCLUDE_MM2S_DRE': 0,
