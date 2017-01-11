@@ -47,7 +47,7 @@ To make your own PYNQ Micro-SD card:
       * Windows: Use `win32DiskImager <https://sourceforge.net/projects/win32diskimager/>`_
       * Linux/MacOS: Use the built in *dd* command\*
    
-\* For detailed instructions for writing the SD card using different operating systems, see the `Appendix: Writing the SD card image <17_appendix.rst#writing-the-sd-card-image>`_. 
+\* For detailed instructions for writing the SD card using different operating systems, see the `Appendix: Writing the SD card image <17_appendix.html#writing-the-sd-card-image>`_. 
    
 Setup the PYNQ-Z1 
 ===================
@@ -275,7 +275,7 @@ There are also a number of example notebooks available showing how to use variou
    :scale: 75%
    :align: center
 
-When you open a notebook and make any changes, or execute cells, the notebook document will be modified. It is recommended that you "Save a copy" when you open a new notebook. If you want to restore the original versions, you can download all the example notebooks from the `PYNQ GitHub page <www.github.com/xilinx/pynq>`_ .    
+When you open a notebook and make any changes, or execute cells, the notebook document will be modified. It is recommended that you "Save a copy" when you open a new notebook. If you want to restore the original versions, you can download all the example notebooks from the `PYNQ GitHub page <http://www.github.com/xilinx/pynq>`_ .    
    
 Accessing files on the board
 ----------------------------
