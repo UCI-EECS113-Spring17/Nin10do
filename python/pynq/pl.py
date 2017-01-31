@@ -742,7 +742,7 @@ class Overlay(PL):
     where
     name (str) is the name of the pin or the interrupt controller
     parent (str) is the name of the parent controller or '' if attached
-        directly to the PS7
+    directly to the PS7 
     number (int) is the interrupt number attached to
 
     Attributes

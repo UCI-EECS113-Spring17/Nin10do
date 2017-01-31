@@ -62,7 +62,7 @@ The sample rate is in MHz, and valid rates are:
 
 ==============================
 Trace Buffer sampling rates
-==============================
+------------------------------
 100 MHz
 ==============================
 
