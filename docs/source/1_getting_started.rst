@@ -2,9 +2,6 @@
 Getting Started
 ***************
 
-Version: IMAGE_2017_01 
-
-
 .. contents:: Table of Contents
    :depth: 2
 	  

@@ -64,7 +64,7 @@ The PYNQ Grove Adapter has four connectors (G1 - G4), allowing up to four Grove 
 
 All pins operate at 3.3V. Due to different pull-up/pull-down I/O requirements for different peripherals (e.g. IIC requires pull-up, and SPI requires pull-down) the Pmod data pins have different IO standards. 
 
-G1 and G2 ([0,4] and [1,5]) are connected to pins with pull-down resistors (supports SPI interfacae, and most peripherals), and G3 and G4 ([2,6], [3,7]) are connected to pins with pull-up resistors (IIC), as indicated in the image. 
+G1 and G2 ([0,4] and [1,5]) are connected to pins with pull-down resistors (supports SPI interface, and most peripherals), and G3 and G4 ([2,6], [3,7]) are connected to pins with pull-up resistors (IIC), as indicated in the image. 
 
 .. image:: ./images/adapter_mapping.JPG
    :align: center
@@ -75,7 +75,7 @@ Pmods already take this pull up/down convention into account in their pin layout
 Arduino Peripherals
 ============================
 
-There is one Arduino connector on the board and can be used to connect to arduino compatible shields. 
+There is one Arduino connector on the board and can be used to connect to Arduino compatible shields. 
 
 .. image:: ./images/pynqz1_arduino_interface.jpg
    :align: center
@@ -100,7 +100,7 @@ Each Grove connector has 4 pins. The PYNQ Shield connects to the Arduino and Chi
 .. image:: ./images/arduino_shield.jpg
    :align: center
 
-With the PYNQ shield jumper (JP1) set to 3.3V (as in the figure), all the pins operate at 3.3V. WIth JP1 set to 5V, G4 - G7 operated at VDD = 5V. 
+With the PYNQ shield jumper (JP1) set to 3.3V (as in the figure), all the pins operate at 3.3V. With JP1 set to 5V, G4 - G7 operated at VDD = 5V. 
 
 ==========   =========================
 Peripheral   Pins

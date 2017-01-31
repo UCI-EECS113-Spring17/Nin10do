@@ -24,7 +24,7 @@ An overlay consists of two main parts; the Programmable Logic (PL) design, and t
 
 Xilinx® Vivado software is used to create the PL design. This will generate a *bitstream* or *binary* file (.bit file) that is used to program the Zynq PL.  
 
-The free webpack version of Vivado can be used with the PYNQ-Z1 board to create overlays.
+The free WebPack version of Vivado can be used with the PYNQ-Z1 board to create overlays.
 https://www.xilinx.com/products/design-tools/vivado/vivado-webpack.html
 
 There are some differences between the standard Zynq design process, and designing overlays for PYNQ. A Vivado project for a Zynq design consists of two parts; the PL design, and the PS configuration settings. The PS configuration includes settings for system clocks, including the clocks used in the PL. 

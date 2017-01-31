@@ -14,16 +14,8 @@ As described in the previous section, an IOP can be used as a flexible controlle
 
 IOPs can also be used standalone to offload some processing from the main processor. However, note that the MicroBlaze processor inside an IOP in the base overlay is running at 100 MHz, compared to the Dual-Core ARM Cortex-A9 running at 650 MHz. The clock speed, and different processor architectures and features should be taken into account when offloading pure application code. e.g. Vector processing on the ARM Cortex-A9 Neon processing unit will be much more efficient than running on the MicroBlaze. The MicroBlaze is most appropriate for low-level, background, or real-time applications.
 
-Previous sections showed the similarities between the Pmod IOP and Arduino IOP. Each IOP contains a `Xilinx MicroBlaze processor <https://en.wikipedia.org/wiki/MicroBlaze>`_, a Debug module, and one or more of the following functional units and interface peripherals:
 
-   * `AXI Timer <http://www.xilinx.com/support/documentation/ip_documentation/axi_timer/v2_0/pg079-axi-timer.pdf>`_
-   * `AXI IIC <http://www.xilinx.com/support/documentation/ip_documentation/axi_iic/v2_0/pg090-axi-iic.pdf>`_
-   * `AXI SPI <http://www.xilinx.com/support/documentation/ip_documentation/axi_quad_spi/v3_2/pg153-axi-quad-spi.pdf>`_
-   * `AXI GPIO <http://www.xilinx.com/support/documentation/ip_documentation/axi_gpio/v2_0/pg144-axi-gpio.pdf>`_ 
-
-The Arduino also includes a UART, and XADC. 
-
-The interface peripherals are connected to a Configurable Switch. The switch is different for the Pmod and the Arduino IOPs. The Pmod configurable switch connects to a Pmod port, and the Arduino configurable switch connects to an Arduino interface connector.
+The interface peripherals (IIC, SPI, Timer, GPIO, UART, XADC, Interrupt controller) are connected to a *Configurable Switch*. The switch is different for the Pmod and the Arduino IOPs. The Pmod configurable switch connects to a Pmod port, and the Arduino configurable switch connects to an Arduino interface connector.
 
 Pmod IOP:
 
@@ -33,6 +25,8 @@ Pmod IOP:
 
    
 The IOP's configurable switch can be used to route signals between the physical interface, and the available internal peripherals in the IOP sub-system. 
+
+The configurable switch is covered in the next section on *IO Processors: Using peripherals in your applications*.
      
 Software requirements
 ==========================
@@ -156,19 +150,41 @@ IOP Memory
 ==========================
 
 
-Each IOP has local memory (immplemented in Xilinx BRAMs) and a connection to the PS DDR memory. 
+Each IOP has local memory (implemented in Xilinx BRAMs) and a connection to the PS DDR memory. 
 
 The IOP instruction and data memory is implemented in a dual port Block RAM, with one port connected to the IOP, and the other to the ARM processor. This allows an executable binary file to be written from the ARM (i.e. the Pynq environment) to the IOP instruction memory. The IOP can also be reset from Pynq, allowing the IOP to start executing the new program. 
 
-The DDR can be used as additional data memory. You need to be careful when using DDR memory, as this is shared with the rest of the system, including other IOPs. 
-
-xxx : How should DR be used?
-
 The IOP data memory, either in local memory, or in DDR memory, can be used as a mailbox for communication and data exchanges between the Pynq environment and the IOP.
 
+DDR memory buffer
+-----------------------
 
-Memory map
-----------
+DDR memory is used by the Linux system. The IOP must not try to write to any memory locations already in use. 
+
+One way to manage DDR memory for an IOP application is to allocate a buffer in memory from a Python application, and pass the pointer of this buffer to the IOP(s) for use. 
+
+A single IOP, or multiple IOPs or other devices in an overlay could access this additional memory. For multiple IOPs accessing the same memory buffer, the user should determine a convention to ensure data is not corrupted. 
+
+For example, a mailbox could be defined with specific read and write locations for each IOP. The Python application would need to reserve the required memory buffer for this mailbox. 
+
+   ============== ==================== ======================
+   address         IOP1                 IOP2
+   ============== ==================== ======================
+   0x0             command (write)      command (read)
+   0x10            acknowledge(read)    acknowledge(write)
+   0x100 - 0x1ff   data (write)         data(read)
+   0x200 - 0x2ff   data (read)          data(write)
+   ============== ==================== ======================
+
+Remember that there is no memory protection, and nothing to stop an IOP writing to any location, so these read/write addresses should be managed by the IOP application designer. 
+
+DDR memory connect
+---------------------
+
+The IOPs are connected to the DDR memory via the General Purpose AXI slave port. This is a direct connection, and no DMA is available, so is only suitable for simple data transfers from the IOP. I.e. The MicroBlaze can attempt to read or write the DDR as quickly as possible in a loop, but there is no support for bursts, or streaming data. 
+
+IOP Memory map
+----------------
 
 The local IOP memory is 64KB of shared data and instruction memory. Instruction memory for the IOP starts at address 0x0.
 
@@ -205,7 +221,7 @@ Running code on different IOPs
 =================================
 
 
-The MicroBlaze local BRAM memory is mapped into the MircoBlaze address space, and also to the ARM address space.  These address spaces are independant, so the local memory will be located at different addresses in each memory space. Some example mappings are shown below to highlight the address translation between MicroBlaze and ARM's memory spaces.  
+The MicroBlaze local BRAM memory is mapped into the MircoBlaze address space, and also to the ARM address space.  These address spaces are independent, so the local memory will be located at different addresses in each memory space. Some example mappings are shown below to highlight the address translation between MicroBlaze and ARM's memory spaces.  
 
 =================   =========================   ============================
 IOP Base Address    MicroBlaze Address Space    ARM Equivalent Address Space

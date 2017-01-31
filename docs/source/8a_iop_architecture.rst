@@ -12,7 +12,7 @@ For overlays to be useful, they must provide sufficient functionality, while als
 
 An IO Processor is implemented in the programmable logic and connects to and controls an external port on the board. There are two types of IOP: Pmod IOP and Arduino IOP. 
 
-Each IOP contains a MicroBlaze processor, a configurable switch, peripherals, and local memory for the MicroBlaze instruction and data memory. The local memory is dual-ported (implemented in Xilin BRAMs), with one port connected to the MicroBlaze, and the other connected to the ARM® Cortex®-A9 processor. This allows the ARM processor to access the MicroBlaze memory and dynamically write a new program to the MicroBlaze instruction area. 
+Each IOP contains a MicroBlaze processor, a configurable switch, peripherals, and local memory for the MicroBlaze instruction and data memory. The local memory is dual-ported (implemented in Xilinx BRAMs), with one port connected to the MicroBlaze, and the other connected to the ARM® Cortex®-A9 processor. This allows the ARM processor to access the MicroBlaze memory and dynamically write a new program to the MicroBlaze instruction area. 
 
 The data area of the memory can be used for communication and data exchanges between the ARM processor and the IOP(s). E.g. a simple mailbox. 
 
@@ -35,11 +35,12 @@ Two Pmod IOPs are included in the base overlay to control each of the two Pmod i
    
 As indicated in the diagram, the Pmod IOP has a MicroBlaze, a configurable switch, and the following peripherals: 
 
-* I2C
-* SPI
-* GPIO blocks
-* Timer
-* Interrupt controller
+
+* `AXI Timer <http://www.xilinx.com/support/documentation/ip_documentation/axi_timer/v2_0/pg079-axi-timer.pdf>`_
+* `AXI IIC <http://www.xilinx.com/support/documentation/ip_documentation/axi_iic/v2_0/pg090-axi-iic.pdf>`_
+* `AXI SPI <http://www.xilinx.com/support/documentation/ip_documentation/axi_quad_spi/v3_2/pg153-axi-quad-spi.pdf>`_
+* `AXI GPIO <http://www.xilinx.com/support/documentation/ip_documentation/axi_gpio/v2_0/pg144-axi-gpio.pdf>`_ 
+
 
 
 Pmod IOP peripherals 
@@ -70,7 +71,7 @@ The GPIO block supports 8 input or output pins
 Timer
 ^^^^^^^^^^^^^^^^^^^
 
-The timer is 32 bits width, and has a *Generate* output, and a PWM output. The *Generate* output can ouput one-time or periodic signal based on a loaded value. For example, on loading a value, the timer can count up or down. Once the counter expires (on a carry) a signal can be generated. The timer can stop, or automatically reload. 
+The timer is 32 bits width, and has a *Generate* output, and a PWM output. The *Generate* signal can output one-time or periodic signal based on a loaded value. For example, on loading a value, the timer can count up or down. Once the counter expires (on a carry) a signal can be generated. The timer can stop, or automatically reload. 
 
 Interrupt controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -80,9 +81,10 @@ The I2c, SPI, GPIO and Timer are connected to the interrupt controller. This is 
 Pmod IOP configurable switch
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The configurable switch can route signals from external FPGA pins to the appropriate hardware interface. The switch is controlled by the MicroBlaze, and can be configured from an IOP application.  
+The configurable switch can route signals from the internal IP to the external FPGA pins. The switch is controlled by the MicroBlaze, and can be configured from an IOP application.  
 
 For details on using the switch, see the next sections on *IO Processors: Writing your own software* and *IO Processors: Using peripherals in your applications*.
+
 
 
 Arduino IOP
@@ -95,33 +97,30 @@ Similar to the Pmod IOP, an Arduino IOP is available to control the Arduino inte
    
 As indicated in the diagram, the Arduino IOP has a MicroBlaze, a configurable switch, and the following peripherals: 
 
-* 2x I2C
-* 2x SPI
-* 1x UART
-* 3x GPIO blocks
-* 1x XADC
-* 1x UART
-* 1x Interrupt controller (32 channels)
+
+
+* 6x `AXI Timer <http://www.xilinx.com/support/documentation/ip_documentation/axi_timer/v2_0/pg079-axi-timer.pdf>`_
+* 2x `AXI IIC <http://www.xilinx.com/support/documentation/ip_documentation/axi_iic/v2_0/pg090-axi-iic.pdf>`_
+* 2x `AXI SPI <http://www.xilinx.com/support/documentation/ip_documentation/axi_quad_spi/v3_2/pg153-axi-quad-spi.pdf>`_
+* 3x `AXI GPIO <http://www.xilinx.com/support/documentation/ip_documentation/axi_gpio/v2_0/pg144-axi-gpio.pdf>`_ 
+* 1x `AXI UART <https://www.xilinx.com/support/documentation/ip_documentation/axi_uartlite/v2_0/pg142-axi-uartlite.pdf>`_ 
+* 1x `AXI Interrupt controller <https://www.xilinx.com/support/documentation/ip_documentation/axi_intc/v4_1/pg099-axi-intc.pdf>`_ 
+* 1x `AXI XADC <https://www.xilinx.com/support/documentation/ip_documentation/axi_xadc/v1_00_a/pg019_axi_xadc.pdf`_ 
+
 
 Arduino IOP peripherals 
 ------------------------
 
+The I2C, SPI, GPIO and Timer blocks are the same as the Pmod IOP blocks. The only difference in the Arduino IOP with these blocks is that for the IIC and SPI, 2 interfaces are enabled, for the GPIO 3 blocks are include, and 6 timers. 
+
 I2C
 ^^^^^^^^^^^^^^^^^^^
-
-There are two I2C controllers available. They both have the same settings:
-   * Frequency: 100KHz
-   * Address mode: 7 bit
+Two I2C available. 
    
 SPI
 ^^^^^^^^^^^^^^^^^^^
 
-There are two SPI controllers available. They both have the same settings:
-   * Standard mode
-   * Transaction width: 8
-   * Frequency: 6.25 MHz (100MHz/16)
-   * Master mode
-   * Fifo depth: 16
+Two SPI available. One is always connected to the Arudino interface dedicated SPI pins. 
    
 GPIO blocks
 ^^^^^^^^^^^^^^^^^^^
@@ -131,7 +130,7 @@ There are three GPIO block available. They support 16 input or output pins on th
 Timers
 ^^^^^^^^^^^^^^^^^^^
 
-There are six timers available. All are 32 bits wide, with a *Generate* output, and a PWM output. The *Generate* output can ouput one-time or periodic signal based on a loaded value. For example, on loading a value, the timer can count up or down. Once the counter expires (on a carry) a signal can be generated. The timer can stop, or automatically reload. 
+There are six timers available.
 
 UART
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -143,7 +142,7 @@ Interrupt controller
    
 The interrupt controller can be connected to all the analog and digital pins, and each of the 6 timers, the I2Cs, the SPIs, the XADC, and UART. This means an external pin on the shield interface can trigger an interrupt. An internal peripheral can also trigger an interrupt.  
 
-Arduino shields have fixed possible configurations.  According to the Arduino specification, the analog pins can be used as analgo, or digital I/O. 
+Arduino shields have fixed possible configurations.  According to the Arduino specification, the analog pins can be used as analog, or digital I/O. 
 
 Other peripherals can be connected as indicated in the table. 
 
@@ -167,16 +166,10 @@ While there is support for analog inputs via the internal XADC, this only allows
 Arduino IOP configurable Switch
 ---------------------------------
 
-The switch can be configured by writing to its configuration registers. 
+The switch is controlled by the MicroBlaze, and can be configured by writing to its configuration registers from an IOP application. 
 
-The dedicated SPI pins are always connected to one of the SPI controllers. 
+The dedicated SPI pins that are part of the Arduino interface are always connected to one of the SPI controllers. 
 
 The analog and digital pins can be configured by writing a 4-bit value to the corresponding place in the IO switch configuration registers, similar to the Pmod switch.  
 
-The following function, part of the Arduino IO switch driver, can be used to configure the switch. 
-
-.. code-block:: c
-
-   void config_arduino_switch();
-
-
+For details on using the switch, see the next sections on *IO Processors: Writing your own software* and *IO Processors: Using peripherals in your applications*.
