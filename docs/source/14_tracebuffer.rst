@@ -59,12 +59,9 @@ To use the trace buffer, instantiate the trace buffer class, specifying the inte
                       
 The sample rate is in MHz, and valid rates are: 
 
+* 166 MHz ???
+* 100 MHz ???
 
-==============================
-Trace Buffer sampling rates
-------------------------------
-100 MHz
-==============================
 
 Once you are ready to start collecting data, start the trace buffer.
    
