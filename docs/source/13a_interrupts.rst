@@ -208,4 +208,4 @@ Interrupt examples using asyncio
 Example notebooks
 -----------------
 
-The ``asyncio_buttons.ipynb`` and ``iop_interrupts_example.ipynb`` notebook can be found in the examples directory.
+The ``asyncio_buttons.ipynb`` notebook can be found in the examples directory.
