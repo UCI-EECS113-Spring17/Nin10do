@@ -105,7 +105,7 @@ As indicated in the diagram, the Arduino IOP has a MicroBlaze, a configurable sw
 * 3x `AXI GPIO <http://www.xilinx.com/support/documentation/ip_documentation/axi_gpio/v2_0/pg144-axi-gpio.pdf>`_ 
 * 1x `AXI UART <https://www.xilinx.com/support/documentation/ip_documentation/axi_uartlite/v2_0/pg142-axi-uartlite.pdf>`_ 
 * 1x `AXI Interrupt controller <https://www.xilinx.com/support/documentation/ip_documentation/axi_intc/v4_1/pg099-axi-intc.pdf>`_ 
-* 1x `AXI XADC <https://www.xilinx.com/support/documentation/ip_documentation/axi_xadc/v1_00_a/pg019_axi_xadc.pdf`_ 
+* 1x `AXI XADC <https://www.xilinx.com/support/documentation/ip_documentation/axi_xadc/v1_00_a/pg019_axi_xadc.pdf>`_ 
 
 
 Arduino IOP peripherals 
