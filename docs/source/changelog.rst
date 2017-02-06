@@ -5,7 +5,7 @@ Documentation Changelog
 .. contents:: Table of Contents
    :depth: 2
 
-Version 2.00 
+Version 1.4 
 ============================
 
 Image release: image_2017_01
@@ -47,7 +47,7 @@ Image release: image_2017_01
    * Interrupts added from IOP to PS
 
 
-Version 1.01
+Version 1.3
 =================
 
 16 Dec 2016
