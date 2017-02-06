@@ -39,7 +39,7 @@ H-R
    Input/Output Processors
 
   Jupyter (Notebooks)
-   `Jupyter <www.jupyter.org>`_ is an open source project consisting of an interactive, web application that allows users to create and share notebook documents that contain live code and the full range of rich media supported by modern browsers. These include text, images, videos, LaTeX-styled equations, and interactive widgets. The Jupyter framework is used as a front-end to over 40 different programming languages.  It originated from the interactive data science and scientific computing communities. Its uses include: data cleaning and transformation, numerical simulation, statistical modelling, machine learning and much more.
+   `Jupyter <https://www.jupyter.org>`_ is an open source project consisting of an interactive, web application that allows users to create and share notebook documents that contain live code and the full range of rich media supported by modern browsers. These include text, images, videos, LaTeX-styled equations, and interactive widgets. The Jupyter framework is used as a front-end to over 40 different programming languages.  It originated from the interactive data science and scientific computing communities. Its uses include: data cleaning and transformation, numerical simulation, statistical modelling, machine learning and much more.
    
 
   MicroBlaze
