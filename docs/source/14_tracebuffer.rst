@@ -19,15 +19,10 @@ A trace buffer is included in the base overlay. It is connected to the pin conne
   
 8MB of DDR memory is available for the trace buffer. The DDR memory is allocated from the kernel, and is fixed when the kernel is compiled. 
 
-Supported protocols
----------------------
-
-The trace buffer uses the SigRock Python package. It can recognise different bus protocols and highlight and format the data appropriately. Check the SigRok webpages for a list of `SigRok supported protocols <https://sigrok.org/wiki/Protocol_decoders>`_
-
-PL IOBs
+Trace IOBs
 ----------------------
 
-The external PL Input/Output Blocks (IOBs) are tri-state. This means three internal signals are associated with each pin; an input (I), and output (O) and a tri-state signal (T). The Tri-state signal controls whether the pin is being used as a input or output. 
+The tracebuffer monitors the external PL Input/Output Blocks (IOBs) on the PMod and Arduino interfaces. The IOBs are tri-state. This means three internal signals are associated with each pin; an input (I), and output (O) and a tri-state signal (T). The Tri-state signal controls whether the pin is being used as a input or output. 
 
 The trace buffer is connected to all 3 signals for each IOP (Pmod and Arduino).
 
@@ -35,6 +30,13 @@ The trace buffer is connected to all 3 signals for each IOP (Pmod and Arduino).
    :align: center
 
 This allows the trace buffer to read the tri-state, determine if the IOB is in input, or output mode, and read the appropriate trace data. 
+
+Supported protocols
+---------------------
+
+The trace buffer uses the `sigrok Python package <https://sigrok.org>`_. It can recognise different bus protocols and highlight and format the data appropriately. 
+
+Currently supported protocols are ``I2C`` and ``SPI``. 
 
 Tracebuffer operation
 ======================
@@ -56,11 +58,11 @@ To use the trace buffer, instantiate the trace buffer class, specifying the inte
       tr_buf = Trace_Buffer(PMODA,pins=[2,3],probes=['SCL','SDA'],
                       protocol="i2c",rate=1000000)
                       
-                      
-The sample rate is in MHz, and valid rates are: 
+The tracebuffer runs at 166MHz. The sample rate is the number of samples stored out of every sample captured. E.g. rate = 1 will store samples at 166 Msps. rate = 2 will store samples at 83 Msps etc.  
 
-* 166 MHz ???
-* 100 MHz ???
+.. code-block :: console
+    
+    Samples captured = 166 MHz/rate
 
 
 Once you are ready to start collecting data, start the trace buffer.
@@ -78,7 +80,7 @@ Once you are finished collecting data, stop the trace buffer.
    tr_buf.stop()
 
 
-Set up the mask values. This will determine which data will be displayed. 
+The data is first parsed into a .csv file. The start and stop positions are provided to select the region of interest. The .csv file is then decoded into a .pd file 
 
 .. code-block:: Python
 
@@ -104,4 +106,5 @@ Example notebooks
 ======================
 
 There are two notebooks available in the example notebooks directory in the Jupyter home area showing how to use the trace buffer; *trace buffer_i2c.ipynb* and *trace buffer_spi.ipynb*. 
+
 One shows an IIC example, and the other shows a SPI example. 

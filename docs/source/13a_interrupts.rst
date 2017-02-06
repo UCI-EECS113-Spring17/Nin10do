@@ -14,7 +14,7 @@ The base overlay also has a interrupt controller connected to the interrupt pin 
 .. image:: ./images/pynqz1_base_overlay_intc_pin.png
    :align: center
 
-Interrupts in PYNQ can be handled in different ways. One method of handling interrupts is using the *asyncio* Python package. Asyncio was first introduced in Python 3.4 as provisional, and starting in `<Python 3.6 is considered stable https://docs.python.org/3.6/whatsnew/3.6.html#asyncio>`_. 
+Interrupts in PYNQ can be handled in different ways. One method of handling interrupts is using the *asyncio* Python package. Asyncio was first introduced in Python 3.4 as provisional, and starting in Python 3.6 is considered stable. `Python 3.6 documentation on asyncio <https://docs.python.org/3.6/whatsnew/3.6.html#asyncio>`_. 
 
 This PYNQ release used Python 3.6 and includes the latest asyncio package.
 
