@@ -126,20 +126,41 @@ Interrupts in PYNQ using asyncio
 
 Asyncio can be used for managing interrupt events from the overlay. A coroutine can be run in an event loop and used to check the status of the interrupt controller in the overlay, and handle any event. Other user functions can also be run in the event loop. If an interrupt is triggered, the next time the "interrupt" coroutine is scheduled, it will service the interrupt. The responsiveness of the interrupt coroutine will depend on how frequently the user code yields control in the loop. 
 
-IOP and Pynq Interrupt Class
+Interrupts in the Base Overlay
 ------------------------------
 
-The Python *Interrupt* class can be found here:
+The I/O peripherals in the base overlay are now interrupt enabled with interrupts fired when switches are toggled or buttons are pressed. Both the *Button* and *Switch* classes have a new function ``wait_for_level`` and a coroutine ``wait_for_level_async`` which block until the corresponding button or switch has the specified value. This follows a convention throughout the PYNQ python API that blocking functions that coroutines have an ``_async`` suffix allowing the implementation of existing functions to be changed without breaking backwards compatibility.
 
-.. code-block:: console
+As an example, consider wanting each LED to light up when the corresponding button is pressed. First a coroutine specifing this functionality is defined
 
-    <GitHub Repository>\pynq\interrupt.py
-    
-This implements the class to manage the AXI interrupt controller in the PL. It is not necessary to examine this code in detail to use interrupts. 
+.. code-block:: Python
 
-The IOP class inherits the interrupt class, and implements an asyncio event-like interface to the interrupt subsystem. 
+    async def button_to_led(number):
+        button = pynq.board.Button(number)
+        led = pynq.board.LED(number)
+        while True:
+            await button.wait_for_level_async(1)
+            led.on()
+            await button.wait_for_level_async(0)
+            led.off()
 
-The Python code for an IOP application can instantiate the Interrupt class and connect an interrupt pin. 
+Next add instances of the coroutine to the default event loop
+
+.. code-block:: Python
+
+    tasks = [asyncio.ensure_future(button_to_led(i) for i in range(4)]
+
+Finally, running the event loop will cause the coroutines to be active. This code runs the event loop until an exception is thrown or the user interrupts the process.
+
+.. code-block:: Python
+
+    asyncio.get_event_loop().run_forever()
+
+
+IOP and Interrupts
+------------------------------
+
+The IOP class has an ``interrupt`` member variable which acts like an *asyncio.Event* with a ``wait`` coroutine and a ``clear`` method. This event is automatically wired to the correct interrupt pin or set to ``None`` if interrupts are not available in the loaded overlay. 
 
 e.g.
 
@@ -147,30 +168,32 @@ e.g.
 
     def __init__(self)
         self.iop = request_iop(iop_id, IOP_EXECUTABLE)
-        self.interrupt = Interrupt('interrupt_pin')
-        
-The IOPs have a GPIO connected to the AXI interrupt controller. The IOP interrupt pin name must be specified to connect the interrupt. 
+        if self.iop.interrupt is None:
+           warn("Interrupts not available in this Overlay")
 
 There are two options for running functions from this new IOP wrapper class. The function can be called from an external asyncio event loop (set up elsewhere), or the function can set up its own event loop and then call its asyncio function from the event loop.
 
 Async function
 ----------------------
 
-The following code defines an asyncio function. notice the ``async`` and ``await`` keywords are the only additional code needed to make this function an asyncio coroutine.
+By convention, the PYNQ python API offers both an asyncio coroutine and a blocking function call for all interrupt-driven functions and it is recommended that this extend to user-provided IOP drivers. The blocking function can be used either by users who have no need to work with asyncio or as a convenience function to run the event loop until a specified condition. The coroutine is given the ``_async`` suffix to avoid breaking backwards compatibility when updating existing functions.
+
+The following code defines an asyncio coroutine: notice the ``async`` and ``await`` keywords are the only additional code needed to make this function an asyncio coroutine.
 
 .. code-block:: Python
 
     async def interrupt_handler_async(self, value):
-        if self.interrupt is None:
+        if self.iop.interrupt is None:
             raise RuntimeError('Interrupts not available in this Overlay')
         while(1):
-            await self.interrupt.wait() # Wait for interrupt
+            await self.iop.interrupt.wait() # Wait for interrupt
             # Do something when an interrupt is received
+            self.iop.interrupt.clear()
 
 Function with event loop
 ---------------------------
 
-The following code sets up an event loop and calls the async function above from the event loop.
+The following code wraps the asyncio coroutine, adding to the default event loop and running it until the coroutine completes.
 
 .. code-block:: Python
     
@@ -182,7 +205,26 @@ The following code sets up an event loop and calls the async function above from
         loop.run_until_complete(asyncio.ensure_future(
             self.interrupt_handler_async()
         ))
-        
+
+Custom interrupt handling
+---------------------------
+
+The Python *Interrupt* class can be found here:
+
+.. code-block:: console
+
+    <GitHub Repository>\pynq\interrupt.py
+
+This class abstracts away management of the AXI interrupt controller in the PL. It is not necessary to examine this code in detail to use interrupts. The interrupt class takes the pin name of the interrupt line and offers a single ``wait`` coroutine. The interrupt is only enabled in the hardware for as long as a coroutine is waiting on an *Interrupt* object. The general pattern for using an Interrupt is as follows:
+
+.. code-block:: Python
+
+    while condition:
+        await interrupt.wait()
+        # Clear interrupt
+
+This pattern avoids race conditions between the interrupt and the controller and ensures that an interrupt isn't seen multiple times.
+
 Interrupt pin mappings
 =========================
 
@@ -208,4 +250,4 @@ Interrupt examples using asyncio
 Example notebooks
 -----------------
 
-The ``asyncio_buttons.ipynb`` notebook can be found in the examples directory.
+The ``asyncio_buttons.ipynb`` notebook can be found in the examples directory. The Arduino LCD IOP driver provides an example of using the IOP interrupts.
