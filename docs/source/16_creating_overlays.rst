@@ -98,14 +98,14 @@ Each entry in this IP dictionary that is returned is a key-value pair.
  
 E.g.: 
 
-``'SEG_mb_bram_ctrl_1_Mem0': ['0x40000000', '0x10000', None]``
+``'SEG_axi_dma_0_Reg': [2151677952, 65536, None],``
 
 Note, this parses the tcl file that was exported with the bitstream. It does not do check the overlay currently running in the PL. 
     
 The key of the entry is the IP instance name; all the IP instance names are parsed from the `*.tcl` file (e.g. `base.tcl`) in the address segment section. The value of the entry is a list of 3 items:
 
-   - The first item shows the base address of the addressable IP (hex).
-   - The second item shows the address range in bytes (hex).
+   - The first item shows the base address of the addressable IP (as an int).
+   - The second item shows the address range in bytes (as an int).
    - The third item records the state associated with the IP. It is `None` by default, but can be user defined.
 
    

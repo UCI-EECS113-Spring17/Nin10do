@@ -10,13 +10,13 @@ Introduction
 
 The Zynq PL can support many types of protocols and interfaces for external peripherals. The Pynq-Z1 has two Pmod ports and one Arduino interface for connecting external peripherals directly to the Zynq PL. This allows peripherals to be controlled in hardware. Other peripherals can be connected to these ports via adapters, or with a breadboard. 
 
-The USB port can also be used to connect standard USB peripherals to the Zynq PS. Linux drivers are required fro connecting USB peripherals. The PYNQ image currently includes drivers for some webcams, and USB wifi peripherals.
+The USB port can also be used to connect standard USB peripherals to the Zynq PS. Linux drivers are required for connecting USB peripherals. The PYNQ image currently includes drivers for some webcams, and USB wifi peripherals.
 
 Note that the Zynq PS has dedicated peripherals including Ethernet, USB, UART, IIC, SPI, CAN controllers and GPIO. Only the Ethernet, USB, and UART are connected externally on the board. It is possible to connect the other controllers internally to the Zynq PL. The peripherals could then be used internally inside the PL, or routed to PL pins. E.g. to Pmod, or Arduino pins. This would require an overlay design.
 
 In the base overlay, each IOP has its only set of controllers, implemented in programmable logic, and does not need to use the Zynq PS peripherals. 
 
-Pmod Interface
+Pmod port
 ===================
 
 A Pmod port is an open 12-pin interface that is supported by a range of Pmod peripherals from Digilent and third party manufacturers. 
@@ -28,7 +28,7 @@ There are two Pmod connectors on PYNQ-Z1.
    :align: center
 
 
-Pmod Port
+Pmod pins
 -----------------------
 
 Each Pmod connector has 12 pins arranged in 2 rows of 6 pins. Each row has 3.3V (VCC), ground (GND) and 4 data pins. Using both rows gives 8 data pins in total. 
@@ -72,7 +72,7 @@ G1 and G2 ([0,4] and [1,5]) are connected to pins with pull-down resistors (supp
 Pmods already take this pull up/down convention into account in their pin layout, so no special attention is required to connect Pmods. 
    
 
-Arduino Peripherals
+Arduino connector
 ============================
 
 There is one Arduino connector on the board and can be used to connect to Arduino compatible shields. 
@@ -80,10 +80,16 @@ There is one Arduino connector on the board and can be used to connect to Arduin
 .. image:: ./images/pynqz1_arduino_interface.jpg
    :align: center
 
-Arduino Connector
+Arduino pins
 -----------------------
 
 Each Arduino connector has 6 analog pins (A0 - A5), 14 multi-purpose Digital pins (D0 - D13), 2 dedicated I2C pins (SCL, SDA), and 4 dedicated SPI pins. 
+
+
+ChipKit pins
+----------------
+
+There are also *ChipKit* pins beside the Arduino interface on the PYNQ-Z1 board. These pins are connected to the Zynq PL, but are not enabled in the base overlay. 
 
 
 Supported Peripherals

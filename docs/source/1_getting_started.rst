@@ -186,7 +186,7 @@ Follow the instructions to reboot the board. Note that as you are logged in as r
    
       sudo shutdown -r now
 	  
-When the board reboots, reconnect using the new hostname. e.g. http://pynq_cmc:9090
+When the board reboots, reconnect using the new hostname. 
 
 If you can't connect to your board, see the step below to open a terminal using the micro USB cable. 
 

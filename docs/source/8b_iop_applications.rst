@@ -33,10 +33,7 @@ Software requirements
 
 A MicroBlaze cross-compiler is required to build software for the MicroBlaze inside an IOP.  Xilinx SDK contains the MicroBlaze cross-compiler and was used to build all Pmod device drivers released with Pynq and is available for free.  It should be noted that Pynq ships with precompiled IOP executables to support various peripherals (see `Pynq Modules <modules.html>`_), but that full source code is available from the project GitHub. Xilinx software is only needed if you intend to build your own IOP applications/peripheral drivers. A free, fully functional, version of the Xilinx tools is available for Pynq if required (see the free `Xilinx Vivado WebPack <https://www.xilinx.com/products/design-tools/vivado/vivado-webpack.html>`_ for more details).  
 
-The current Pynq release is built using Vivado and SDK 2016.1. it is recommended to use the same version to rebuild existing Vivado and SDK projects. If you only intend to build software, you will only need to install SDK. The full Vivado and SDK installation is only required to design new overlays. 
-
-`Download Xilinx Vivado and SDK 2016.1 <http://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2016-1.html>`_
-
+The current Pynq release is built using Vivado and SDK 2016.1. it is recommended to use the same version to rebuild existing Vivado and SDK projects. If you only intend to build software, you will only need to install SDK. The full Vivado and SDK installation is only required to design new overlays. `Download Xilinx Vivado and SDK 2016.1 <http://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2016-1.html>`_
 You can use the Vivado HLx Web Install Client and select SDK and/or Vivado during the installation.
 
 Pynq also support building of bitstreams from SDSoC. SDSoC is currently a separate download and installation from the main Vivado/SDK software. 
@@ -159,16 +156,16 @@ The IOP data memory, either in local memory, or in DDR memory, can be used as a 
 DDR memory buffer
 -----------------------
 
-DDR memory is used by the Linux system. The IOP must not try to write to any memory locations already in use. 
+DDR memory is managed by the Linux kernel running on the Cortex-A9s.  Therefore, the IOP must first be allocated memory regions to access DRAM – this allocation is accomplished within pynq using the xlnk driver.
 
-One way to manage DDR memory for an IOP application is to allocate a buffer in memory from a Python application, and pass the pointer of this buffer to the IOP(s) for use. 
+One benefit of using the pynq xlnk driver is that the physical address is also recorded.  By having that mapping, Pynq applications can then send the physical address of that buffer to programmable logic as a pointer.
 
 A single IOP, or multiple IOPs or other devices in an overlay could access this additional memory. For multiple IOPs accessing the same memory buffer, the user should determine a convention to ensure data is not corrupted. 
 
-For example, a mailbox could be defined with specific read and write locations for each IOP. The Python application would need to reserve the required memory buffer for this mailbox. 
+For example, a mailbox could be defined inside a shared memory buffer with specific read and write locations for each IOP. The Python application would need to reserve the required memory buffer for this mailbox. 
 
    ============== ==================== ======================
-   address         IOP1                 IOP2
+   Shared Memory  IOP1                 IOP2
    ============== ==================== ======================
    0x0             command (write)      command (read)
    0x10            acknowledge(read)    acknowledge(write)
@@ -196,7 +193,7 @@ There is no memory management in the IOP. You must ensure the application, inclu
 
 If you need to modify the stack and heap for an application, the linker script can be found in the ``<project>/src/`` directory.
 
-It is recommended to follow the convention for data communication between the two processors via MAILBOX. These MAILBOX values are defined in the header file.  
+It is recommended to follow the same convention for data communication between the two processors via a MAILBOX. 
 
 
    ================================= ========
@@ -206,6 +203,23 @@ It is recommended to follow the convention for data communication between the tw
    Shared mailbox memory size        0x1000
    Shared mailbox Command Address    0xfffc
    ================================= ========
+   
+These MAILBOX values for an IOP application are defined here:
+
+.. code-block:: console
+
+   <GitHub Repository>/Pynq-Z1/vivado/ip/arduino_io_switch_1.0/  \
+   drivers/arduino_io_switch_1.0/src/arduino.h
+   <GitHub Repository>/Pynq-Z1/vivado/ip/pmod_io_switch_1.0/  \
+   drivers/pmod_io_switch_1.0/src/pmod.h
+
+The corresponding Python constants are defined here:
+   
+.. code-block:: console
+
+   <GitHub Repository>/python/pynq/iop/iop_const.py
+
+
 
 
 The following example explains how Python could initiate a read from a peripheral connected to an IOP. 
