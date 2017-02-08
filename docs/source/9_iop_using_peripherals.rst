@@ -344,7 +344,7 @@ Finally, the iop.start() call pulls the IOP out of reset. After this, the IOP wi
 Example of Python Class Runtime Methods
 -------------------------------------------
 
-The read method in the Pmod_ALS class will simply read an ALS sample and return that value to the caller.  The following steps demonstrate a Python to MicroBlaze read transaction specifc to the ALS class.
+The read method in the Pmod_ALS class will simply read an ALS sample and return that value to the caller.  The following steps demonstrate a Python to MicroBlaze read transaction specific to the ALS class.
 
 .. code-block:: python
 

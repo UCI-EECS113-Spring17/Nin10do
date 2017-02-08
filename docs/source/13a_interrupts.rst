@@ -7,14 +7,15 @@ Interrupts
 	  
 Introduction
 =========================================
-Each IOP has its only interrupt controller allowing its local peripherals to interrupt it. This is the standard `AXI Interrupt Controller <https://www.xilinx.com/products/intellectual-property/axi_intc.html>`_ and can be used in an IOP application as it would be used in any MicroBlaze design.
+Each IOP has its only interrupt controller. This allows IOP peripherals (IIC, SPI, GPIO, Uart, Timers) to interrupt the MicroBlaze processor inside the IOP. The IOP uses the `AXI Interrupt Controller <https://www.xilinx.com/products/intellectual-property/axi_intc.html>`_. It can be used in an IOP application in the same way as any other MicroBlaze application to manage this local interrupts.
 
-The base overlay also has a interrupt controller connected to the interrupt pin of the Zynq PS. The IOPs can trigger this interrupt controller to signal to the PS and Python that an interrupt in the overlay has occurred. 
+The base overlay also has a interrupt controller connected to the interrupt pin of the Zynq PS. The overlay interrupt controller can be triggered by the MicroBlaze inside an IOP to signal to the PS and Python that an interrupt has occurred in the overlay. 
 
 .. image:: ./images/pynqz1_base_overlay_intc_pin.png
    :align: center
 
-Interrupts in PYNQ can be handled in different ways. One method of handling interrupts is using the *asyncio* Python package. Asyncio was first introduced in Python 3.4 as provisional, and starting in Python 3.6 is considered stable. `Python 3.6 documentation on asyncio <https://docs.python.org/3.6/whatsnew/3.6.html#asyncio>`_. 
+Interrupts in PYNQ can be handled in different ways. The *asyncio* Python package is one method of handling interrupts. Asyncio was first introduced in Python 3.4 as provisional, and starting in Python 3.6 is considered stable. `Python 3.6 documentation on asyncio <https://docs.python.org/3.6/whatsnew/3.6.html#asyncio>`_. 
+
 
 This PYNQ release used Python 3.6 and includes the latest asyncio package.
 
@@ -52,6 +53,8 @@ A future is an object that will have a value in the future. The event loop can w
 
     asyncio.ensure_future(async_coroutine(5)),
 
+https://docs.python.org/3/library/asyncio-task.html#future
+
 Coroutines
 ^^^^^^^^^^^^^
 
@@ -62,6 +65,9 @@ A coroutine is a function that can pause, that can receive values, and can retur
     async def function():
         ...
         
+
+https://docs.python.org/3/library/asyncio-task.html#coroutines
+
 Tasks
 ^^^^^^^^^^^^^
 
@@ -70,6 +76,8 @@ A task is a coroutine wrapped inside a Future. A task runs as long as the event 
 .. code-block:: Python
 
    asyncio.ensure_future(async_coroutine())
+
+https://docs.python.org/3/library/asyncio-task.html#task
 
 await
 ^^^^^^^^^^^^^
@@ -115,7 +123,7 @@ When the coroutine in a task *awaits* it is paused. When it has a value, it resu
 Asyncio requirements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-All blocking calls in event loop should be replaced with coroutines.If you do not do this, when a blocking call is reached, it will block the rest of the loop. 
+All blocking calls in event loop should be replaced with coroutines. If you do not do this, when a blocking call is reached, it will block the rest of the loop. 
 
 If you need blocking calls, they should be in separate threads. 
 
@@ -129,9 +137,9 @@ Asyncio can be used for managing interrupt events from the overlay. A coroutine 
 Interrupts in the Base Overlay
 ------------------------------
 
-The I/O peripherals in the base overlay are now interrupt enabled with interrupts fired when switches are toggled or buttons are pressed. Both the *Button* and *Switch* classes have a new function ``wait_for_level`` and a coroutine ``wait_for_level_async`` which block until the corresponding button or switch has the specified value. This follows a convention throughout the PYNQ python API that blocking functions that coroutines have an ``_async`` suffix allowing the implementation of existing functions to be changed without breaking backwards compatibility.
+The I/O peripherals in the base overlay will trigger interrupts when switches are toggled or buttons are pressed. Both the *Button* and *Switch* classes have a function ``wait_for_level`` and a coroutine ``wait_for_level_async`` which block until the corresponding button or switch has the specified value. This follows a convention throughout the PYNQ python API that that coroutines have an ``_async`` suffix.
 
-As an example, consider wanting each LED to light up when the corresponding button is pressed. First a coroutine specifing this functionality is defined
+As an example, consider an application where each LED will light up when the corresponding button is pressed. First a coroutine specifying this functionality is defined:
 
 .. code-block:: Python
 
@@ -176,9 +184,9 @@ There are two options for running functions from this new IOP wrapper class. The
 Async function
 ----------------------
 
-By convention, the PYNQ python API offers both an asyncio coroutine and a blocking function call for all interrupt-driven functions and it is recommended that this extend to user-provided IOP drivers. The blocking function can be used either by users who have no need to work with asyncio or as a convenience function to run the event loop until a specified condition. The coroutine is given the ``_async`` suffix to avoid breaking backwards compatibility when updating existing functions.
+By convention, the PYNQ python API offers both an asyncio coroutine and a blocking function call for all interrupt-driven functions. It is recommended that this should be extended to any user-provided IOP drivers. The blocking function can be used where there is no need to work with asyncio, or as a convenience function to run the event loop until a specified condition. The coroutine is given the ``_async`` suffix to avoid breaking backwards compatibility when updating existing functions.
 
-The following code defines an asyncio coroutine: notice the ``async`` and ``await`` keywords are the only additional code needed to make this function an asyncio coroutine.
+The following code defines an asyncio coroutine. Notice the ``async`` and ``await`` keywords are the only additional code needed to make this function an asyncio coroutine.
 
 .. code-block:: Python
 
@@ -250,4 +258,4 @@ Interrupt examples using asyncio
 Example notebooks
 -----------------
 
-The ``asyncio_buttons.ipynb`` notebook can be found in the examples directory. The Arduino LCD IOP driver provides an example of using the IOP interrupts.
+The `asyncio_buttons.ipynb <https://github.com/cathalmccabe/PYNQ/blob/master/Pynq-Z1/notebooks/examples/asyncio_buttons.ipynb>`_ notebook can be found in the examples directory. The Arduino LCD IOP driver provides an example of using the IOP interrupts.

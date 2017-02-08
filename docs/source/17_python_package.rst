@@ -69,7 +69,7 @@ For example, the following code will instantiate and write to the Pmod_OLED atta
 bitstream
 ===========
 
-This folder contains the base.bit and the base.tcl. The base.bit is the precompiled overlay and base.tcl provides the information of the hardware it is built from.
+This folder contains the base.bit and the base.tcl. The base.bit is the precompiled overlay and base.tcl provides information about the hardware it is built from. The tcl file can be parsed by Pynq packages to determine information about the hardware. ``PL.ip_dict`` will parse the tcl for an overlay and respond with the addresses of any peripherals in the overlay. 
 
 
 drivers

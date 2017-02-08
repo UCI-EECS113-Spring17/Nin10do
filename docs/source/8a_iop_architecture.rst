@@ -120,7 +120,7 @@ Two I2C available.
 SPI
 ^^^^^^^^^^^^^^^^^^^
 
-Two SPI available. One is always connected to the Arudino interface dedicated SPI pins. 
+Two SPI available. One is always connected to the Arduino interface dedicated SPI pins. 
    
 GPIO blocks
 ^^^^^^^^^^^^^^^^^^^

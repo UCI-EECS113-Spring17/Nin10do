@@ -8,7 +8,7 @@ Trace buffer
 Introduction
 ==================
 
-On-chip debug allows FPGA resources to be used to used to monitor internal or external signals in a design for debug. The debug circuitry taps into signals in a design under test, and saves the signal data as the system is operating. The debug data is saved to on-chip memory, and can be read out later for offline debug and analysis. One of the limitations of traditional on-chip debug is that amount of local memory usually available on chip is relatively small. This means only a limited amount of debug data can be captured (typically a few Kilobytes).
+On-chip debug allows FPGA resources to be used to monitor internal or external signals in a design for debug. The debug circuitry taps into signals in a design under test, and saves the signal data as the system is operating. The debug data is saved to on-chip memory, and can be read out later for offline debug and analysis. One of the limitations of traditional on-chip debug is that amount of local memory usually available on chip is relatively small. This means only a limited amount of debug data can be captured (typically a few Kilobytes).
 
 The on-chip debug concept has been extended to allow trace debug data to be saved to DDR memory. This allows more debug data to be captured. The data can then be analyzed using Python. 
 
@@ -105,6 +105,4 @@ The data can be displayed in a notebook. This is done using the Python WaveDrom 
 Example notebooks
 ======================
 
-There are two notebooks available in the example notebooks directory in the Jupyter home area showing how to use the trace buffer; *trace buffer_i2c.ipynb* and *trace buffer_spi.ipynb*. 
-
-One shows an IIC example, and the other shows a SPI example. 
+There are two notebooks available in the example notebooks directory in the Jupyter home area showing how to use the trace buffer; `trace buffer_i2c.ipynb <https://github.com/cathalmccabe/PYNQ/blob/master/Pynq-Z1/notebooks/examples/tracebuffer_i2c.ipynb>`_* and *`trace buffer_spi.ipynb <https://github.com/cathalmccabe/PYNQ/blob/master/Pynq-Z1/notebooks/examples/tracebuffer_spi.ipynb>`_*. One shows an IIC example, and the other shows a SPI example. 

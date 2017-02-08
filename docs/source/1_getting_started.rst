@@ -116,7 +116,7 @@ You can also use the terminal to configure proxy settings, or to configure any o
 Connect directly to your computer
 ---------------------------------------
 
-You will need to have an Ethernet port available on your computer, and you will need to have permimssions to configure your network interface. With a direct connection, you will be able to use PYNQ, but unless you can bridge the Ethernet connection to the board to an Internet connection on your computer, your board will not have Internet access. You will be unable to update or load new packages without Internet access.
+You will need to have an Ethernet port available on your computer, and you will need to have permissions to configure your network interface. With a direct connection, you will be able to use PYNQ, but unless you can bridge the Ethernet connection to the board to an Internet connection on your computer, your board will not have Internet access. You will be unable to update or load new packages without Internet access.
 
 +--------------------------------------------------------+
 | Direct Connection to your computer (Static IP)         |

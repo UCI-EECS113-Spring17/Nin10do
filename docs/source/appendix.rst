@@ -16,7 +16,7 @@ The 'magic' of mapping an application to an APSoC, without designing custom hard
 
 An FPGA overlay is a domain-specific FPGA design that has been created to be highly configurable so that it can be used in  as many different applications as possible.  It has been crafted to maximize post-bitstream programmability which is exposed via its API.  The API provides a new entry-point for application-focused software and systems engineers to exploit APSoCs in their solutions.  With an API they only have to write software to program configure the functions of an overlay for their applications.
 
-By analogy with the Linux kernel and device drivers, FPGA overlays are designed by relatively few engineers so that they can be re-used by many others. In this way, a relatively small number of overlay designers can support a much larger community of APSoC designers.  Overlays exist to promote re-use. Like kernels and device drivers, these hardware-level artifacts are not static, but evolve and improve over time.
+By analogy with the Linux kernel and device drivers, FPGA overlays are designed by relatively few engineers so that they can be re-used by many others. In this way, a relatively small number of overlay designers can support a much larger community of APSoC designers.  Overlays exist to promote re-use. Like kernels and device drivers, these hardware-level artefacts are not static, but evolve and improve over time.
 
 Characteristics of Good Overlays
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -34,7 +34,7 @@ Note that FPGA overlays are not a novel concept.  They have been studied for ove
 The Case for Productivity-layer Languages
 -----------------------------------------
 
-Successive generations of All Programmable Systems on Chip embed more processors and greater processing power. As larger applications are integrated into APSoCs, the embedded code increases also. Embedded code that is speed or size critical, will continue to be written in C/C++.  These 'efficiency-layer or systems languages' are needed to write fast, low-level drivers, for example. However, the proportion of embedded code that is neither speed-critical or size-critical, is increasing more rapidly. We refer to this braod class of code as *embedded applications code*.   
+Successive generations of All Programmable Systems on Chip embed more processors and greater processing power. As larger applications are integrated into APSoCs, the embedded code increases also. Embedded code that is speed or size critical, will continue to be written in C/C++.  These 'efficiency-layer or systems languages' are needed to write fast, low-level drivers, for example. However, the proportion of embedded code that is neither speed-critical or size-critical, is increasing more rapidly. We refer to this broad class of code as *embedded applications code*.   
 
 Programming embedded applications code in higher-level, 'productivity-layer languages' makes good sense.  It simply extends the generally-accepted best-practice of always programming at the highest possible level of abstraction.  Python is currently a premier productivity-layer language.  It is now available in different variants for a range of embedded systems, hence its adoption in Pynq.  Pynq runs CPython on Linux on the ARM® processors in Zynq® devices.  To further increase productivity and portability, Pynq uses the Jupyter Notebook, an open-source web framework to rapidly develop systems, document their behavior and disseminate the results.
 
@@ -58,7 +58,7 @@ MAC
 
 On Mac OS, you can use dd, or the graphical tool ImageWriter to write to your Micro SD card.
 
-* First open a termianl and unzip the image:
+* First open a terminal and unzip the image:
 
    .. code-block:: console
 

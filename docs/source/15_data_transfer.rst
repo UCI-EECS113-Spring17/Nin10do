@@ -64,13 +64,13 @@ xlnk basic example
       bufptr[i] = i
    
 
-Data can be written to the buffer, and the physical addr can be sent to a block in the accelerator (for example and IOP) which could then access the buffer from DDR memory. 
+Data can be written to the buffer, and the physical address can be sent to a block in the accelerator (for example and IOP) which could then access the buffer from DDR memory. 
 
 
 xlnx DMA example
 -----------------
 
-This example assumes the overlay contains the `AXI Direct Memory Access (7.1) https://www.xilinx.com/support/documentation/ip_documentation/axi_dma/v7_1/pg021_axi_dma.pdf>`_ IP. This IP can be used to connect to AXI streams in an overlay. 
+This example assumes the overlay contains the `AXI Direct Memory Access (7.1) <https://www.xilinx.com/support/documentation/ip_documentation/axi_dma/v7_1/pg021_axi_dma.pdf>`_ IP. This IP can be used to connect to AXI streams in an overlay. 
 
 .. code-block:: Python
 

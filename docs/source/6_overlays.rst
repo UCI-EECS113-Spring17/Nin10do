@@ -71,7 +71,7 @@ The HDMI out IP supports the following resolutions:
 
 Data can be stream from DDR memory to the HDMI output. The Pynq HDMI Out python instance contains framebuffers to allow for smooth display of video data. 
 
-See the *5_base_overlay_video.ipynb* notebook in the getting started directory for examples of using the HDMI In and Out. 
+See the `5_base_overlay_video.ipynb <https://github.com/cathalmccabe/PYNQ/blob/master/docs/source/9b_base_overlay_video.ipynb>`_ notebook in the getting started directory for examples of using the HDMI In and Out. 
 
 
 Mic in 
@@ -97,7 +97,7 @@ IOPs
 --------------
 IOPs are dedicated IO processor subsystems that allow peripherals with different IO standards to be connected to the system on demand. This allows a software programmer to use a wide range of peripherals with different interfaces and protocols. The same overlay can be used to support different peripheral. 
 
-There are two types of IOP, Pmod, and Arduino. Both types of IOPs have a similar architecture, but have different configurations of IP to connect to supported peripherals. 
+There are two types of IOPs: Pmod, and Arduino. Both types of IOPs have a similar architecture, but have different configurations of IP to connect to supported peripherals. 
 
 Pmods are covered in more detail in the next section. 
 
@@ -106,10 +106,10 @@ Trace buffer
 
 A trace buffer is available and can be used to capture trace data on the Pmod, and Arduino interfaces for debug. The trace buffer is connected directly to DDR. This allows trace data on the interfaces to be streamed back to DDR memory for analysis in Python. 
 
-Using Python libraries `Wavedrom <http://wavedrom.com>`_ and `Sigrok <https://sigrok.org>`_, the protocol of the captured data can be specified, and the trace data can be displayed as decoded waveforms inside a Jupyter notebook. 
+Trace data can be displayed as decoded waveforms inside a Jupyter notebook. 
 
 Examples
 ^^^^^^^^^^^^
 
-See the ``trace buffer_i2c.ipynb`` and the ``trace buffer_spi.ipynb`` in the examples directory for examples on how to use the trace buffer. 
+See the `trace buffer_i2c.ipynb <https://github.com/Xilinx/PYNQ/blob/master/Pynq-Z1/notebooks/examples>`_ and the `trace buffer_spi.ipynb <https://github.com/Xilinx/PYNQ/blob/master/Pynq-Z1/notebooks/examples>`_ in the examples directory for examples on how to use the trace buffer. 
 
