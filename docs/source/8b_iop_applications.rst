@@ -164,14 +164,14 @@ A single IOP, or multiple IOPs or other devices in an overlay could access this 
 
 For example, a mailbox could be defined inside a shared memory buffer with specific read and write locations for each IOP. The Python application would need to reserve the required memory buffer for this mailbox. 
 
-   ============== ==================== ======================
-   Shared Memory  IOP1                 IOP2
-   ============== ==================== ======================
-   0x0             command (write)      command (read)
-   0x10            acknowledge(read)    acknowledge(write)
-   0x100 - 0x1ff   data (write)         data(read)
-   0x200 - 0x2ff   data (read)          data(write)
-   ============== ==================== ======================
+   ================= ==================== ======================
+   Shared Memory      IOP1                 IOP2
+   ================= ==================== ======================
+   buffer(0)          command (write)      command (read)
+   buffer(1)          acknowledge(read)    acknowledge(write)
+   buffer(100->199)   data (write)         data(read)
+   buffer(200->299)   data (read)          data(write)
+   ================= ==================== ======================
 
 Remember that there is no memory protection, and nothing to stop an IOP writing to any location, so these read/write addresses should be managed by the IOP application designer. 
 
