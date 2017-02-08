@@ -258,4 +258,4 @@ Interrupt examples using asyncio
 Example notebooks
 -----------------
 
-The `asyncio_buttons.ipynb <https://github.com/cathalmccabe/PYNQ/blob/master/Pynq-Z1/notebooks/examples/asyncio_buttons.ipynb>`_ notebook can be found in the examples directory. The Arduino LCD IOP driver provides an example of using the IOP interrupts.
+The `asyncio_buttons.ipynb <https://github.com/Xilinx/PYNQ/blob/master/Pynq-Z1/notebooks/examples/asyncio_buttons.ipynb>`_ notebook can be found in the examples directory. The Arduino LCD IOP driver provides an example of using the IOP interrupts.
