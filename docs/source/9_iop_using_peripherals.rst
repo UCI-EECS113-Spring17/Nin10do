@@ -1,26 +1,47 @@
 *******************************************************
-IO Processors: Using peripherals in your applications
+IO Processors: Writing applications
 *******************************************************
 
 .. contents:: Table of Contents
    :depth: 2
 
-Configurable switch header files
-==================================
+Introduction
+===============
 
-Pmod
-------
+The previous section described the software architecture and the software build process. This section will cover how to write the IOP application and also the corresponding Python interface. 
 
-You can find the header files for the Pmod IOP switch here:
+The section assumes that the hardware platform and the BSPs have already been generated as detailed in the previous section. 
+
+IOP header files and libraries
+================================
+
+A library is provided for the IOPs which includes an API for local peripherals (IIC, SPI, Timer, Uart, GPIO), the configurable switch, links to the peripheral addresses, and mappings for the mailbox used in the existing IOP peripheral applications provided with Pynq. This library can be used to write custom IOP applications. 
+
+The only IP that is specific to each IOP is the configurable switch. There is a ``pmod_io_switch`` and an ``arduino_io_switch``. The header files for the IOPs are associated with the corresponding configurable switch, and can be found here
 
 :: 
    
    <GitHub Repository>/Pynq-Z1/vivado/ip/pmod_io_switch_1.0/  \
-   drivers/pmod_io_switch_v1_0/src/
+   drivers/pmod_io_switch_v1_0/src/pmod.h
+      <GitHub Repository>/Pynq-Z1/vivado/ip/arduino_io_switch_1.0/  \
+   drivers/arduino_io_switch_v1_0/src/arduino.h
 
-The ``pmod_io_switch.h`` includes the API for the configuration switch and predefined constants that can be used to connect pins.
+The corresponding C code, ``pmod.c`` and ``arduino.c`` can also be found in this directory. 
+ 
+Configurable switch header files
+==================================
+
+There is a separate header file that corresponds to each configurable switch. These files include the API for the configuration switch and predefined constants that can be used to connect to the physical interface on the board. 
+
+Pmod Configurable Switch header
+---------------------------------------
+
+You can find the header file for the Pmod IOP switch here:
+
+:: 
    
-``pmod.h`` and ``pmod.c`` are also part of the Pmod IO switch driver, and contain an API, addresses, and constant definitions that can be used to write code for an IOP.
+   <GitHub Repository>/Pynq-Z1/vivado/ip/pmod_io_switch_1.0/  \
+   drivers/pmod_io_switch_v1_0/src/pmod_io_switch.h
 
 This code is automatically compiled into the Board Support Package (BSP). 
 
@@ -33,33 +54,36 @@ The corresponding files for the Arduino IOP switch can be found here:
 :: 
    
    <GitHub Repository>/Pynq-Z1/vivado/ip/arduino_io_switch_1.0/  \
-   drivers/arduino_io_switch_1.0/src/
+   drivers/arduino_io_switch_1.0/src/arduino_io_switch.h
 
-The files are ``arduino_io_switch.h``, ``arduino.h`` and ``arduino.c``
 
 Files to include
-----------------------
+------------------------
 
 To use these files in an IOP application, include the header file(s):
-   
+
+
+For a Pmod IOP:
+
 .. code-block:: c
 
    #include "pmod.h"
    #include "pmod_io_switch.h"
 
-or 
+or for an Arduino IOP:
 
 .. code-block:: c
 
    #include "arduino.h"
    #include "arduino_io_switch.h"
 
-Pmod applications should call ``pmod_init()`` at the beginning of the application, and Arduino applications, ``arduino_init()`` to initialize the IOP peripherals.  
+Pmod applications should call ``pmod_init()`` at the beginning of the application, and Arduino applications, ``arduino_init()``. This will initialize all the IOP peripherals in the subsystem.  
 
    
 Controlling the Pmod IOP Switch
 =================================
 
+The IOP switch needs to be configured by the IOP application before any peripherals can be used. This can be done statically from within the application, or the application can allow Python to write a switch configuration to shared memory, which can be used to configure the switch. This functionality must be implemented by the user, but existing IOP applications can be used as a guide. For example, the ``arduino_lcd18`` IOP project shows and example of reading the switch configuration from the mailbox, and using this to configure the switch. 
 
 There are 8 data pins on a Pmod port, that can be connected to any of 16 internal peripheral pins (8x GPIO, 2x SPI, 4x IIC, 2x Timer). This means the configuration switch for the Pmod has 8 connections to make to the data pins. 
 

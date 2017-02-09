@@ -44,6 +44,16 @@ Pmods that use both rows (e.g. 2x4 pins, 2x6 pins), should usually be aligned to
 
 Pmod peripherals with only a single row of pins can be connected to either the top row or the bottom row of a Pmod port (again, aligned to VCC/GND). If you are using an existing driver/overlay, you will need to check which pins/rows are supported for a given overlay, as not all options may be implemented. e.g. the Pmod ALS is currently only supported on the top row of a Pmod port, not the bottom row.  
 
+Pmod IO standard
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+All pins operate at 3.3V. Due to different pull-up/pull-down I/O requirements for different peripherals (e.g. IIC requires pull-up, and SPI requires pull-down) the Pmod data pins have different IO standards. 
+
+0,1 and 4,5 are connected to pins with pull-down resistors. This can support the SPI interface, and most peripherals. 2,3 and 6,7 are connected to pins with pull-up resistors. This can support the IIC interface. 
+
+Pmods already take this pull up/down convention into account in their pin layout, so no special attention is required when using Pmods. 
+   
+
 Other Peripherals
 -----------------------------
 
@@ -62,14 +72,13 @@ The PYNQ Grove Adapter has four connectors (G1 - G4), allowing up to four Grove 
 .. image:: ./images/pmod_grove_adapter.jpg
    :align: center
 
-All pins operate at 3.3V. Due to different pull-up/pull-down I/O requirements for different peripherals (e.g. IIC requires pull-up, and SPI requires pull-down) the Pmod data pins have different IO standards. 
+Pmod IO standard for Grove
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-G1 and G2 ([0,4] and [1,5]) are connected to pins with pull-down resistors (supports SPI interface, and most peripherals), and G3 and G4 ([2,6], [3,7]) are connected to pins with pull-up resistors (IIC), as indicated in the image. 
+On the grove adapter G1 and G2 map to Pmod pins [0,4] and [1,5], which are connected to pins with pull-down resistors (supports SPI interface, and most peripherals). G3 and G4 map to pins [2,6], [3,7], which are connected to pins with pull-up resistors (IIC), as indicated in the image. 
 
 .. image:: ./images/adapter_mapping.JPG
    :align: center
-
-Pmods already take this pull up/down convention into account in their pin layout, so no special attention is required to connect Pmods. 
    
 
 Arduino connector
@@ -108,14 +117,10 @@ Each Grove connector has 4 pins. The PYNQ Shield connects to the Arduino and Chi
 
 With the PYNQ shield jumper (JP1) set to 3.3V (as in the figure), all the pins operate at 3.3V. With JP1 set to 5V, G4 - G7 operated at VDD = 5V. 
 
-==========   =========================
-Peripheral   Pins
-==========   =========================
-UART         D0, D1
-I2C          A4, A5
-SPI*         D10 - D13
-PWM          D3, D5, D6, D9, D10, D11
-Timer        D3 - D6 and D8 - D11
-==========   =========================
-
 The Arduino pins, and ChipKit pins are also passed to the top of the board to allow additional shields to be attached. 
+
+Using Peripherals
+=====================
+
+Pynq introduces IOPs (Input Output Processors) which are covered in the next section. An IOP consists of a MicroBlaze processor with dedicated peripherals which can be selected and routed to the physical interface at runtime. An IOP provides flexibility allowing peripherals with different protocols and interfaces to be used with the same overlay. 
+A peripheral will have an IOP driver application, and a Python wrapper. The next sections will cover the IOP architecture, and how to write driver applications and the corresponding Python wrapper for a peripheral. 

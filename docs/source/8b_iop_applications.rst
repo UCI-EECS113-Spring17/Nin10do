@@ -1,5 +1,5 @@
 ********************************************
-IO Processors: Writing Your Own Software
+IO Processors: Software Architecture
 ********************************************
 
 .. contents:: Table of Contents
@@ -14,60 +14,54 @@ As described in the previous section, an IOP can be used as a flexible controlle
 
 IOPs can also be used standalone to offload some processing from the main processor. However, note that the MicroBlaze processor inside an IOP in the base overlay is running at 100 MHz, compared to the Dual-Core ARM Cortex-A9 running at 650 MHz. The clock speed, and different processor architectures and features should be taken into account when offloading pure application code. e.g. Vector processing on the ARM Cortex-A9 Neon processing unit will be much more efficient than running on the MicroBlaze. The MicroBlaze is most appropriate for low-level, background, or real-time applications.
 
-
-The interface peripherals (IIC, SPI, Timer, GPIO, UART, XADC, Interrupt controller) are connected to a *Configurable Switch*. The switch is different for the Pmod and the Arduino IOPs. The Pmod configurable switch connects to a Pmod port, and the Arduino configurable switch connects to an Arduino interface connector.
-
-Pmod IOP:
-
-
-.. image:: ./images/pmod_iop.jpg
-   :align: center
-
-   
-The IOP's configurable switch can be used to route signals between the physical interface, and the available internal peripherals in the IOP sub-system. 
-
-The configurable switch is covered in the next section on *IO Processors: Using peripherals in your applications*.
      
 Software requirements
 ==========================
 
-A MicroBlaze cross-compiler is required to build software for the MicroBlaze inside an IOP.  Xilinx SDK contains the MicroBlaze cross-compiler and was used to build all Pmod device drivers released with Pynq and is available for free.  It should be noted that Pynq ships with precompiled IOP executables to support various peripherals (see `Pynq Modules <modules.html>`_), but that full source code is available from the project GitHub. Xilinx software is only needed if you intend to build your own IOP applications/peripheral drivers. A free, fully functional, version of the Xilinx tools is available for Pynq if required (see the free `Xilinx Vivado WebPack <https://www.xilinx.com/products/design-tools/vivado/vivado-webpack.html>`_ for more details).  
+`Xilinx SDK (Software Development Kit) <http://www.xilinx.com/products/design-tools/embedded-software/sdk.html>`_ contains the MicroBlaze cross-compiler which can be used to build software for the MicroBlaze inside an IOP. SDK is available for free as part of the `Xilinx Vivado WebPack <https://www.xilinx.com/products/design-tools/vivado/vivado-webpack.html>`_. 
 
-The current Pynq release is built using Vivado and SDK 2016.1. it is recommended to use the same version to rebuild existing Vivado and SDK projects. If you only intend to build software, you will only need to install SDK. The full Vivado and SDK installation is only required to design new overlays. `Download Xilinx Vivado and SDK 2016.1 <http://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2016-1.html>`_
+The full source code for all supported IOP peripherals is available from the project GitHub. Pynq ships with precompiled IOP executables to support various peripherals (see `Pynq Modules <modules.html>`_), so Xilinx software is only needed if you intend to modify existing code, or build your own IOP applications/peripheral drivers. 
+
+The current Pynq release is built using Vivado and SDK 2016.1. it is recommended to use the same version to rebuild existing Vivado and SDK projects. If you only intend to build software, you will only need to install SDK. The full Vivado and SDK installation is only required to modify or design new overlays. `Download Xilinx Vivado and SDK 2016.1 <http://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2016-1.html>`_
 You can use the Vivado HLx Web Install Client and select SDK and/or Vivado during the installation.
-
-Pynq also support building of bitstreams from SDSoC. SDSoC is currently a separate download and installation from the main Vivado/SDK software. 
 
 Compiling projects
 ==========================
 
-Software executables run on the MicroBlaze inside the IOP. Code for the MicroBlaze can be written in C or C++ and compiled using the `Xilinx SDK (Software Development Kit) <http://www.xilinx.com/products/design-tools/embedded-software/sdk.html>`_. 
+Software executables run on the MicroBlaze inside an IOP. Code for the MicroBlaze can be written in C or C++ and compiled using Xilinx SDK . 
 
 You can pull or clone the Pynq GitHub repository, and all the driver source and project files can be found in ``<GitHub Repository>\Pynq-Z1\sdk``,  (Where ``<GitHub Repository>`` is the location of the PYNQ repository).  
 
-These projects are considered SDK *Application* projects and contain the top level application. Each SDK project requires a BSP project (Board Support Package), and a hardware platform project. See below for more details. Software libraries are included in a Board Support Package (BSP) project, and the BSP is linked to from the application project. 
+SDK Application, Board Support Package, Hardware Platform
+----------------------------------------------------------------------
 
-All *Application* projects can be compiled from the command line using Makefiles, or imported into the SDK GUI. 
+Each SDK application project requires a BSP project (Board Support Package), and a hardware platform project. The application project will include the user code (C/C++). The Application project is linked to a BSP. The BSP (Board Support Package) contains software libraries and drivers to support the underlying peripherals in the system and is automatically generated in SDK. The BSP is then linked to a Hardware Platform. A Hardware Platform defines the peripherals in the IOP subsystem, and the memory map of the system. It is used by the BSP to build software libraries to support the underlying hardware. The hardware platform is also automatically generated in SDK. 
+
+All *Application* projects and the underlying BSP and hardware platform can be compiled from the command line using makefiles, or imported into the SDK GUI. 
 
 You can also use existing projects as a starting point to create your own project. 
 
-HDF file
-------------
+Hardware Platform (HDF file)
+-----------------------------
 
-Before an Application project and BSP can be created or compiled in SDK, a *Hardware Platform*  project is required. A Hardware Platform defines the peripherals in the IOP subsystem, and the memory map of the system, and is used by the BSP to build software libraries to support the underlying hardware. 
+Before an Application project and BSP can be created or compiled in SDK, a *Hardware Platform*  project is required. 
 
 A Hardware Description File (.hdf), created by Vivado, is used to create the *Hardware Platfrom*  project in SDK.
 
 A precompiled .hdf file is provided, so it is not necessary to run Vivado to generate a .hdf file:
 
    ``<GitHub Repository>/Pynq-Z1/sdk/``
+   
+There will be one hardware platform for each overlay. 
 
 Board Support Package
 --------------------------
 
-The BSP (Board Support Package) contains software libraries and drivers to support the underlying peripherals in the system.
+Once the hardware platform has been generated, the BSP can be built. A BSP includes software libraries for peripherals in the system. It must be linked to a Hardware Platform, as this is where the peripherals in the system are defined. Once the BSP has been generated, an application project can then be linked to a BSP, and use the software libraries available in the BSP. 
 
-A BSP must be linked to a Hardware Platform, as this is where the peripherals in the system are defined. An Application Project is then linked to a BSP, and can use the libraries available in the BSP.
+A BSP is specific to a processor subsystem. There can be many BSPs associated with an overlay, depending on the types of processors available in the system. In the case of the base overlay, there are two types of processor subsystems: Pmod IOP and Arduino IOP which both require a BSP. The BSPs will share the same hardware platform. 
+
+An application for the Pmod IOP will be linked to the Pmod IOP BSP. As the two Pmod IOPs are identical, an application written for one Pmod IOP can run on the other Pmod IOP. An Arduino application will be linked to the Pmod IOP BSP. 
 
 Building the projects
 --------------------------
@@ -78,9 +72,9 @@ A Makefile to automatically create and build the Hardware Platform and the BSP c
 
 Application projects for peripherals that ship with Pynq (e.g. Pmods and Grove peripherals) can also be found in the same location. Each project is contained in a separate folder. 
    
-The Makefile uses the .hdf file to create the Hardware Platform. The BSP can then be created. The application projects will also be compiled automatically as part of this process.
+The makefile uses the .hdf file to create the Hardware Platform. The BSP can then be created. The application projects will also be compiled automatically as part of this process.
 
-The Makefile requires SDK to be installed, and can be run from Windows, or Linux.
+The makefile requires SDK to be installed, and can be run from Windows, or Linux.
 
 To run ``make`` from Windows, open SDK, and choose a temporary workspace (make sure this path is external to the downloaded GitHub repository). From the *Xilinx Tools* menu, select *Launch Shell*
 
@@ -104,7 +98,7 @@ From either the Windows Shell, or the Linux terminal, navigate to the sdk folder
    
 This will create the Hardware Platform Project (*hw_def*), and the Board Support Package (*bsp*), and then link and build all the application projects. 
 
-If you examine the Makefile, you can see how the *MBBINS* variable at the top of the makefile is used to compile the application projects. If you want to add your own custom project to the build process, you need to add the project name to the *MBBINS* variable, and save the project in the same location as the other application projects.
+If you examine the makefile, you can see how the *MBBINS* variable at the top of the makefile is used to compile the application projects. If you want to add your own custom project to the build process, you need to add the project name to the *MBBINS* variable, and save the project in the same location as the other application projects.
 
 Individual projects can be built by navigating to the ``<project directory>/Debug`` and running ``make``.
 
@@ -122,17 +116,17 @@ This is done automatically by the makefile for the existing application projects
 Creating your own Application project
 --------------------------------------
 
-Using the Makefile flow, you can use an existing project as a starting point for your own project. 
+Using the akefile flow, you can use an existing project as a starting point for your own project. 
 
 Copy and rename the project, and modify or replace the .c file in the src/ with your C code. The generated .bin file will have the same base name as your C file. 
 
 e.g. if your C code is my_peripheral.c, the generated .elf and .bin will be my_peripheral.elf and my_peripheral.bin.
 
-We encourage the following naming convention for applications <pmod|grove|arduino>_<peripheral>
+The following naming convention is recommended for peripheral applications <pmod|grove|arduino>_<peripheral>
 
 You will need to update references from the old project name to your new project name in ``<project directory>/Debug/makefile`` and ``<project directory>/Debug/src/subdir.mk``
 
-If you want your project to build in the main Makefile, you should also append the .bin name of your project to the *MBBINS* variable at the top of the makefile.
+If you want your project to build in the main makefile, you should also append the .bin name of your project to the *MBBINS* variable at the top of the makefile.
 
 If you are using the SDK GUI, you can import the Hardware Platform, BSP, and any application projects into your SDK workspace.
 
@@ -143,7 +137,7 @@ If you are using the SDK GUI, you can import the Hardware Platform, BSP, and any
 
 The SDK GUI can be used to build and debug your code.  
     
-IOP Memory
+IOP Memory architecture
 ==========================
 
 
