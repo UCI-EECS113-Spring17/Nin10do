@@ -105,4 +105,5 @@ The data can be displayed in a notebook. This is done using the Python WaveDrom 
 Example notebooks
 ======================
 
-There are two notebooks available in the example notebooks directory in the Jupyter home area showing how to use the trace buffer; `trace buffer_i2c.ipynb <https://github.com/Xilinx/PYNQ/blob/master/Pynq-Z1/notebooks/examples/tracebuffer_i2c.ipynb>`_* and *`trace buffer_spi.ipynb <https://github.com/Xilinx/PYNQ/blob/master/Pynq-Z1/notebooks/examples/tracebuffer_spi.ipynb>`_*. One shows an IIC example, and the other shows a SPI example. 
+There are two notebooks available in the example notebooks directory in the Jupyter home area showing how to use the trace buffer; `trace buffer_i2c.ipynb <https://github.com/Xilinx/PYNQ/blob/master/Pynq-Z1/notebooks/examples/tracebuffer_i2c.ipynb>`_ and `trace buffer_spi.ipynb <https://github.com/Xilinx/PYNQ/blob/master/Pynq-Z1/notebooks/examples/tracebuffer_spi.ipynb>`_. One shows an IIC example, and the other shows a SPI example. 
+
