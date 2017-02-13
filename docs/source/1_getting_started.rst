@@ -42,7 +42,7 @@ Preloaded Micro SD cards are available from Digilent. If you already have a Micr
 
 To make your own PYNQ Micro-SD card:
 
-   * `Download and the PYNQ-Z1 image <https://files.digilent.com/Products/PYNQ/pynq_z1_image_2016_09_14.zip>`_ and unzip
+   * `Download and the PYNQ-Z1 image <https://files.digilent.com/Products/PYNQ/pynq_z1_image_2017_02_10.zip>`_ and unzip
    * Write the image to a blank Micro SD card (minimum 8GB recommended)
       * Windows: Use `win32DiskImager <https://sourceforge.net/projects/win32diskimager/>`_
       * Linux/MacOS: Use the built in *dd* command\*

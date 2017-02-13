@@ -5,12 +5,12 @@ What's New
 .. contents:: Table of Contents
    :depth: 2
    
-2016_02_08 image
+v1.4 PYNQ image
 ===============================
 
-The downloadable PYNQ image for the Pynq-Z1 has been updated and is available here: 
+The latest PYNQ image for the Pynq-Z1 is available here: 
 
-* `Download the PYNQ-Z1  2016_02_08 image <https://files.digilent.com/Products/PYNQ/pynq_z1_image_2016_02_08.zip>`_
+* `Download the v1.4 PYNQ-Z1 2016_02_10 image <https://files.digilent.com/Products/PYNQ/pynq_z1_image_2016_02_10.zip>`_
 
 This image corresponds to the `v1.4 tag branch on the Pynq GitHub repository <https://github.com/Xilinx/PYNQ/tree/v1.4>`_.
 

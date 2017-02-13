@@ -17,12 +17,12 @@ Python productivity for Zynq (Pynq) Documentation
    5_programming_onboard
    6_overlays
    7_peripherals
-   10_base_overlay_iop
-   11_base_overlay_video
-   12_base_overlay_audio
-   8a_iop_architecture
-   8b_iop_applications
-   9_iop_using_peripherals
+   8_base_overlay_iop
+   9_base_overlay_video
+   10_base_overlay_audio
+   11a_iop_architecture
+   11b_iop_applications
+   11c_iop_using_peripherals
    13a_interrupts
    #13b_base_overlay_interrupts
    #14_tracebuffer
