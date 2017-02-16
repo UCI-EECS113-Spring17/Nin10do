@@ -8,9 +8,9 @@ Change log
 Version 1.4 
 ============================
 
-Image release: pynq_z1_image_2016_02_08
+Image release: pynq_z1_image_2016_02_10
 
-Documentation updated:  08 Feb 2017
+Documentation updated:  10 Feb 2017
 
 * Xilinx Linux kernel upgraded to 4.6.0
 
@@ -46,10 +46,10 @@ Documentation updated:  08 Feb 2017
 
 * Pynq API/driver changes
    * TraceBuffer: Bit masks are not required. Only pins should be specified. 
-   * PL: ``pl_dict`` returns an integer type for any base addresshttp://pynq.readthedocs.io/en/latest/4_programming_python.html / address range.
+   * PL: ``pl_dict`` returns an integer type for any base address / address range.
    * Video: Video mode constants are exposed outside the class.
    * Microblaze binaries for IOP updated.    
-   * Xlnk() driver updated, with better support for SDX 2016.3. Removed the customized Xlnk() drivers and use the libsds version.
+   * Xlnk() driver updated to support SDX 2016.3. Removed the customized Xlnk() drivers and use the libsds version.
 
 * Added new iop modules  
    * arduino_lcd18
@@ -57,7 +57,6 @@ Documentation updated:  08 Feb 2017
 * Added Notebooks	
    * audio (updated)
    * arduino_lcd (new)
-   * utilities (new)
    * asyncio (new)
    
 * Documentation changes
