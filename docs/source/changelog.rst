@@ -49,15 +49,15 @@ Documentation updated:  10 Feb 2017
    * PL: ``pl_dict`` returns an integer type for any base address / address range.
    * Video: Video mode constants are exposed outside the class.
    * Microblaze binaries for IOP updated.    
-   * Xlnk() driver updated to support SDX 2016.3. Removed the customized Xlnk() drivers and use the libsds version.
+   * Xlnk driver updated to support SDx 2016.3. Removed the customized Xlnk drivers and use the libsds version.
 
 * Added new iop modules  
    * arduino_lcd18
    
 * Added Notebooks	
-   * audio (updated)
-   * arduino_lcd (new)
-   * asyncio (new)
+   * audio_playback (updated)
+   * arduino_lcd18 (new)
+   * asyncio_buttons (new)
    
 * Documentation changes
    * New section on peripherals and interfaces
