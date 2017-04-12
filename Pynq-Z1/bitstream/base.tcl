@@ -91,7 +91,7 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 
 set list_projs [get_projects -quiet]
 if { $list_projs eq "" } {
-   create_project base base -part xc7z020clg400-1
+   create_project -force base base -part xc7z020clg400-1
 }
 
 set_property  ip_repo_paths  ../ip [current_project]
@@ -579,10 +579,12 @@ proc create_hier_cell_mb3_iic_subsystem { parentCell nameHier } {
 
   # Create instance: mb3_iic_pl_sw, and set properties
   set mb3_iic_pl_sw [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_iic:2.0 mb3_iic_pl_sw ]
-
+  set_property -dict [list CONFIG.C_SCL_INERTIAL_DELAY {50} CONFIG.C_SDA_INERTIAL_DELAY {50}] [get_bd_cells mb3_iic_pl_sw]
+  
   # Create instance: mb3_shared_iic_sw, and set properties
   set mb3_shared_iic_sw [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_iic:2.0 mb3_shared_iic_sw ]
-
+  set_property -dict [list CONFIG.C_SCL_INERTIAL_DELAY {50} CONFIG.C_SDA_INERTIAL_DELAY {50}] [get_bd_cells mb3_shared_iic_sw]
+  
   # Create interface connections
   connect_bd_intf_net -intf_net mb3_iic_pl_sw_IIC [get_bd_intf_pins IIC1] [get_bd_intf_pins mb3_iic_pl_sw/IIC]
   connect_bd_intf_net -intf_net mb3_shared_iic_sw_IIC [get_bd_intf_pins IIC] [get_bd_intf_pins mb3_shared_iic_sw/IIC]
@@ -1700,6 +1702,7 @@ CONFIG.C_IS_DUAL {1} \
 
   # Create instance: mb2_iic, and set properties
   set mb2_iic [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_iic:2.0 mb2_iic ]
+  set_property -dict [list CONFIG.C_SCL_INERTIAL_DELAY {50} CONFIG.C_SDA_INERTIAL_DELAY {50}] [get_bd_cells mb2_iic]
 
   # Create instance: mb2_intc, and set properties
   set mb2_intc [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_intc:4.1 mb2_intc ]
@@ -1890,7 +1893,8 @@ CONFIG.C_IS_DUAL {1} \
 
   # Create instance: mb1_iic, and set properties
   set mb1_iic [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_iic:2.0 mb1_iic ]
-
+  set_property -dict [list CONFIG.C_SCL_INERTIAL_DELAY {50} CONFIG.C_SDA_INERTIAL_DELAY {50}] [get_bd_cells mb1_iic]
+  
   # Create instance: mb1_intc, and set properties
   set mb1_intc [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_intc:4.1 mb1_intc ]
 
@@ -2390,7 +2394,7 @@ CONFIG.PCW_CAN_PERIPHERAL_VALID {0} \
 CONFIG.PCW_CLK0_FREQ {100000000} \
 CONFIG.PCW_CLK1_FREQ {142857132} \
 CONFIG.PCW_CLK2_FREQ {200000000} \
-CONFIG.PCW_CLK3_FREQ {166666672} \
+CONFIG.PCW_CLK3_FREQ {100000000} \
 CONFIG.PCW_CORE0_FIQ_INTR {0} \
 CONFIG.PCW_CORE0_IRQ_INTR {0} \
 CONFIG.PCW_CORE1_FIQ_INTR {0} \
@@ -3677,18 +3681,11 @@ levelinfo -pg 1 -10 190 570 1010 1500 1980 2480 2860 -top 0 -bot 3100
 
 create_root_design ""
 
-# Additional steps to get to bitstream
-# generate toplevel wrapper files
-make_wrapper -files [get_files ./base/base.srcs/sources_1/bd/system/system.bd] -top
-
-add_files -norecurse ./base/base.srcs/sources_1/bd/system/hdl/system_wrapper.v
-update_compile_order -fileset sources_1
-update_compile_order -fileset sim_1
+# Add constraints
 add_files -fileset constrs_1 -norecurse ./src/constraints/top.xdc
 
-# replace top wrapper with custom top.v
+# Add custom top wrapper
 add_files -norecurse ./src/top.v
-update_compile_order -fileset sources_1
 set_property top top [current_fileset]
 update_compile_order -fileset sources_1
 
