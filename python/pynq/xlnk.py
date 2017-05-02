@@ -37,11 +37,12 @@ import sys
 import cffi
 import resource
 
-try:
-    if os.getuid() != 0:
-        raise RuntimeError("Root permission needed by the library.")
-except:
-    print("Root permission needed by xlnk.")
+#try:
+if os.getuid() != 0:
+    print(os.uname())
+    raise RuntimeError("Root permission needed by the library.")
+#except:
+#    print("Root permission needed by xlnk.")
     
 def sig_handler(signum, frame):
     print("Invalid Memory Access!")
