@@ -101,11 +101,8 @@ class Xlnk:
         None
 
         """
-        try:
-            for key in self.bufmap.keys():
-                libxlnk.cma_free(key)
-        except:
-            pass
+        for key in self.bufmap.keys():
+            libxlnk.cma_free(key)
             
     def __check_buftype(self, buf):
         """Internal method to check for a valid buffer.
