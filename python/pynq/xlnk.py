@@ -62,7 +62,7 @@ try:
     arch = os.uname()[-1]
     if arch in ('x86_64'):
         pass 
-    else
+    else:
         libxlnk = ffi.dlopen("/usr/lib/libsds_lib.so")
 except:
     if os.getuid() != 0:
