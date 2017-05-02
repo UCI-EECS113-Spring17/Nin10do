@@ -61,7 +61,8 @@ def _get_tcl_name(bitfile_name):
         The absolute path of the .tcl file.
 
     """
-    return os.path.splitext(bitfile_name)[0] + '.tcl'
+    try:
+        return os.path.splitext(bitfile_name)[0] + '.tcl'
 
 
 def _get_ip(tcl_name):
