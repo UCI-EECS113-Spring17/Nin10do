@@ -170,16 +170,13 @@ class Xlnk:
             An CFFI object which can be accessed similar to arrays.
             
         """
-        try:
-            if data_type != "void":
-                length = ffi.sizeof(data_type) * length
-            buf = libxlnk.cma_alloc(length, cacheable)
-            if buf == ffi.NULL:
-                raise RuntimeError("Failed to allocate Memory!")
-            self.bufmap[buf] = length
-            return ffi.cast(data_type + "*", buf)
-        except:
-            pass
+        if data_type != "void":
+            length = ffi.sizeof(data_type) * length
+        buf = libxlnk.cma_alloc(length, cacheable)
+        if buf == ffi.NULL:
+            raise RuntimeError("Failed to allocate Memory!")
+        self.bufmap[buf] = length
+        return ffi.cast(data_type + "*", buf)
          
     def cma_get_buffer(self, buf, length):
         """Get a buffer object.
@@ -201,11 +198,8 @@ class Xlnk:
             A CFFI object which supports buffer interface.
 
         """
-        try:
-            self.__check_buftype(buf)
-            return ffi.buffer(buf, length)
-        except:
-            pass
+        self.__check_buftype(buf)
+        return ffi.buffer(buf, length)
         
     def cma_get_phy_addr(self, buf_ptr):
         """Get the physical address of a buffer.
@@ -290,13 +284,10 @@ class Xlnk:
         None
 
         """
-        try:
-            if buf in self.bufmap:
-                self.bufmap.pop(buf, None)
-            self.__check_buftype(buf)
-            libxlnk.cma_free(buf)
-        except:
-            pass
+        if buf in self.bufmap:
+            self.bufmap.pop(buf, None)
+        self.__check_buftype(buf)
+        libxlnk.cma_free(buf)
             
     def cma_stats(self):
         """Get current CMA memory Stats.
@@ -313,18 +304,15 @@ class Xlnk:
             Dictionary of current stats.
 
         """
-        try:
-            stats = {}
-            free_pages = libxlnk.cma_pages_available()
-            stats['CMA Memory Available'] = resource.getpagesize() * free_pages
-            memused = 0
-            for key in self.bufmap:
-                memused += self.bufmap[key]
-            stats['CMA Memory Usage'] = memused
-            stats['Buffer Count'] = len(self.bufmap)
-            return stats
-        except:
-            pass
+        stats = {}
+        free_pages = libxlnk.cma_pages_available()
+        stats['CMA Memory Available'] = resource.getpagesize() * free_pages
+        memused = 0
+        for key in self.bufmap:
+            memused += self.bufmap[key]
+        stats['CMA Memory Usage'] = memused
+        stats['Buffer Count'] = len(self.bufmap)
+        return stats
             
     def xlnk_reset(self):
         """Systemwide Xlnk Reset.
@@ -338,8 +326,5 @@ class Xlnk:
         None
 
         """
-        try:
-            self.bufmap = {}
-            libxlnk._xlnk_reset()
-        except:
-            pass
+        self.bufmap = {}
+        libxlnk._xlnk_reset()
