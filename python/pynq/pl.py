@@ -63,7 +63,8 @@ def _get_tcl_name(bitfile_name):
     """
     try:
         return os.path.splitext(bitfile_name)[0] + '.tcl'
-
+    except:
+        return none
 
 def _get_ip(tcl_name):
     """This method returns the MMIO base and range of an IP.
