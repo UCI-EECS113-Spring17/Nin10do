@@ -37,9 +37,6 @@ import sys
 import cffi
 import resource
 
-if os.getuid() != 0:
-    raise RuntimeError("Root permission needed by the library.")
-
 def sig_handler(signum, frame):
     print("Invalid Memory Access!")
     Xlnk().xlnk_reset()
@@ -59,8 +56,18 @@ uint32_t cma_pages_available();
 void _xlnk_reset();
 """)
 
-libxlnk = ffi.dlopen("/usr/lib/libsds_lib.so")
-
+try:
+    # CHeck architecture of host machine
+    # if x86, assume ReadTheDocs build, and don't open libxlnk
+    arch = os.uname()[-1]
+    if arch in ('x86_64'):
+        pass 
+    else:
+        libxlnk = ffi.dlopen("/usr/lib/libsds_lib.so")
+except:
+    if os.getuid() != 0:
+        raise RuntimeError("Root permission needed by xlnk library.")
+    
 class Xlnk:
     """Class to enable CMA memory management.
 
@@ -96,7 +103,7 @@ class Xlnk:
         """
         for key in self.bufmap.keys():
             libxlnk.cma_free(key)
-    
+            
     def __check_buftype(self, buf):
         """Internal method to check for a valid buffer.
         
@@ -170,7 +177,7 @@ class Xlnk:
             raise RuntimeError("Failed to allocate Memory!")
         self.bufmap[buf] = length
         return ffi.cast(data_type + "*", buf)
-        
+         
     def cma_get_buffer(self, buf, length):
         """Get a buffer object.
         
@@ -193,7 +200,7 @@ class Xlnk:
         """
         self.__check_buftype(buf)
         return ffi.buffer(buf, length)
-    
+        
     def cma_get_phy_addr(self, buf_ptr):
         """Get the physical address of a buffer.
         
@@ -281,7 +288,7 @@ class Xlnk:
             self.bufmap.pop(buf, None)
         self.__check_buftype(buf)
         libxlnk.cma_free(buf)
-    
+            
     def cma_stats(self):
         """Get current CMA memory Stats.
 
@@ -306,7 +313,7 @@ class Xlnk:
         stats['CMA Memory Usage'] = memused
         stats['Buffer Count'] = len(self.bufmap)
         return stats
-
+            
     def xlnk_reset(self):
         """Systemwide Xlnk Reset.
 
