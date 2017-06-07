@@ -40,10 +40,12 @@ while True:
         print("up")
     #print(kypd.read())
     #print("{0:b}".format(kypd.read()))
-    time.sleep(0.1)
+    time.sleep(0.05)
     i=i+1
-    if i==1000:
-        break
+    if i==20:
+        print("next one")
+        time.sleep(3)
+        i = 0
 
     
 
